@@ -4,7 +4,6 @@ import '../core/database.dart';
 import '../models/todo_model.dart';
 
 class TodoDatasource {
-
   Future<void> addTodo(TodoModel todo) async {
     await (await Database.instance).execute(
       Sql.named('INSERT INTO todo (name) VALUES (@name)'),
@@ -19,11 +18,10 @@ class TodoDatasource {
       Sql.named('SELECT * FROM todo'),
     );
 
-
     final cache = <TodoModel>[];
     for (final row in result) {
       cache.add(TodoModel.fromJson(row.toColumnMap()));
-    }    
+    }
 
     return List.unmodifiable(cache);
   }

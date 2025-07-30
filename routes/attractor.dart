@@ -16,7 +16,7 @@ Future<Response> onRequest(RequestContext context) async {
       ),
     );
   }
-  if(name.length <= 4) {
+  if (name.length <= 4) {
     return Response(
       statusCode: 422,
       body: jsonEncode(

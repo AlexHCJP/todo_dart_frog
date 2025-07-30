@@ -33,7 +33,7 @@ Future<Response> _post(RequestContext context) async {
     );
   }
 
-  final todo = TodoModel.fromJson(body);
+  final todo = TodoModel.create(body);
 
   await context.read<TodoDatasource>().addTodo(todo);
 
@@ -47,8 +47,10 @@ Future<Response> _get(RequestContext context) async {
   final todos = await context.read<TodoDatasource>().getTodos();
 
   if (filter != null && filter.isNotEmpty) {
-    final filteredTodos =
-        todos.where((todo) => todo.name.toUpperCase().contains(filter.trim().toUpperCase())).toList();
+    final filteredTodos = todos
+        .where((todo) =>
+            todo.name.toUpperCase().contains(filter.trim().toUpperCase()),)
+        .toList();
     return Response(body: jsonEncode({'todos': filteredTodos}));
   }
 
