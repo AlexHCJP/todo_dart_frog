@@ -48,8 +48,10 @@ Future<Response> _get(RequestContext context) async {
 
   if (filter != null && filter.isNotEmpty) {
     final filteredTodos = todos
-        .where((todo) =>
-            todo.name.toUpperCase().contains(filter.trim().toUpperCase()),)
+        .where(
+          (todo) =>
+              todo.name.toUpperCase().contains(filter.trim().toUpperCase()),
+        )
         .toList();
     return Response(body: jsonEncode({'todos': filteredTodos}));
   }

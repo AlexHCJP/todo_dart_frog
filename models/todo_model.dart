@@ -1,13 +1,8 @@
 class TodoModel {
-  TodoModel({
-    required String id,
-    required this.name,
-  }) : _id = id;
-
-  TodoModel._(this._id, this.name);
+  TodoModel._({required String? id, required this.name}) : _id = id;
 
   factory TodoModel.fromJson(Map<String, dynamic> json) {
-    return TodoModel(
+    return TodoModel._(
       id: json['id'] as String,
       name: json['name'] as String,
     );
@@ -15,17 +10,19 @@ class TodoModel {
 
   factory TodoModel.create(Map<String, dynamic> json) {
     return TodoModel._(
-      null,
-      json['name'] as String,
+      id: null,
+      name: json['name'] as String,
     );
   }
 
   final String? _id;
   final String name;
 
+  String? get id => _id;
+
   Map<String, dynamic> toJson() {
     return {
-      '_id': _id,
+      'id': _id,
       'name': name,
     };
   }
