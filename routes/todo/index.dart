@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
-import 'package:postgres/postgres.dart';
-
-import '../../core/database.dart';
 import '../../data_source/todo_datasource.dart';
 import '../../models/todo_model.dart';
 
