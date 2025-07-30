@@ -23,10 +23,12 @@ RUN dart pub global run dart_frog_cli:dart_frog build
 
 # Ensure packages are still up-to-date if anything has changed.
 
-ENV DATABASE_HOST=${DATABASE_HOST} \
-    DATABASE_NAME=${DATABASE_NAME} \
-    DATABASE_USERNAME=${DATABASE_USERNAME} \
-    DATABASE_PASSWORD=${DATABASE_PASSWORD}
+
+RUN export DATABASE_HOST=${DATABASE_HOST}
+RUN export DATABASE_PORT=${DATABASE_PORT}
+RUN export DATABASE_NAME=${DATABASE_NAME}
+RUN export DATABASE_USERNAME=${DATABASE_USERNAME}
+RUN export DATABASE_PASSWORD=${DATABASE_PASSWORD}
 
 
 RUN dart pub get --offline
