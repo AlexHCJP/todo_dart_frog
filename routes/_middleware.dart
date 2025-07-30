@@ -4,17 +4,24 @@ import 'package:dart_frog_request_logger/log_formatters.dart';
 
 import '../data_source/todo_datasource.dart';
 
-final requustLogger = provider<RequestLogger>(
+Middleware requustLogger2() => provider<RequestLogger>(
   (context) => RequestLogger(
     headers: context.request.headers,
     logFormatter: formatSimpleLog(),
   ),
 );
 
-final todosource = TodoDatasource();
+
+final TodoDatasource todoDatasource = TodoDatasource();
+
+Middleware todoprovider() => provider<TodoDatasource>(
+  (context) => todoDatasource
+);
+
+
 
 Handler middleware(Handler handler) {
   return handler.use(requestLogger())
-    .use(requustLogger)
-    .use(provider<TodoDatasource>((_) => todosource));
+    .use(requustLogger2())
+    .use(todoprovider());
 }

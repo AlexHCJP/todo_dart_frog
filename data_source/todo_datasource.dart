@@ -1,17 +1,39 @@
+import 'package:postgres/postgres.dart';
+
+import '../core/database.dart';
 import '../models/todo_model.dart';
 
 class TodoDatasource {
-  final _cache = <TodoModel>[];
 
-  void addTodo(TodoModel todo) {
-    _cache.add(todo);
+  Future<void> addTodo(TodoModel todo) async {
+    await (await Database.instance).execute(
+      Sql.named('INSERT INTO todo (name) VALUES (@name)'),
+      parameters: {
+        'name': todo.name,
+      },
+    );
   }
 
-  List<TodoModel> getTodos() {
-    return List.unmodifiable(_cache);
+  Future<List<TodoModel>> getTodos() async {
+    final result = await (await Database.instance).execute(
+      Sql.named('SELECT * FROM todo'),
+    );
+
+
+    final cache = <TodoModel>[];
+    for (final row in result) {
+      cache.add(TodoModel.fromJson(row.toColumnMap()));
+    }    
+
+    return List.unmodifiable(cache);
   }
 
-  void removeTodo(String uuid) {
-    _cache.removeWhere((todo) => todo.id == uuid);
+  Future<void> removeTodo(String uuid) async {
+    await (await Database.instance).execute(
+      Sql.named('DELETE FROM todo WHERE id = @id'),
+      parameters: {
+        'id': uuid,
+      },
+    );
   }
 }
