@@ -25,6 +25,16 @@ class TodoDatasource {
 
     return List.unmodifiable(cache);
   }
+  
+  Future<void> updateTodo(TodoModel todo) async {
+    await (await Database.instance).execute(
+      Sql.named('UPDATE todo SET name = @name WHERE id = @id'),
+      parameters: {
+        'id': todo.id,
+        'name': todo.name,
+      },
+    );
+  }
 
   Future<void> removeTodo(String uuid) async {
     await (await Database.instance).execute(
