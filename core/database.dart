@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:postgres/postgres.dart';
+
+import 'enviroment.dart';
 
 class Database {
   static Connection? _connection;
@@ -11,10 +11,10 @@ class Database {
   static Future<Connection> getConnection() async {
     return _connection = await Connection.open(
       Endpoint(
-        host: Platform.environment['DATABASE_HOST']!,
-        database: Platform.environment['DATABASE_NAME']!,
-        username: Platform.environment['DATABASE_USERNAME'],
-        password: Platform.environment['DATABASE_PASSWORD'],
+        host: Enviroment.databaseHost,
+        database: Enviroment.databaseName,
+        username: Enviroment.databaseUsername,
+        password: Enviroment.databasePassword,
       ),
       settings: const ConnectionSettings(
         sslMode: SslMode.disable,

@@ -12,15 +12,12 @@ Middleware requustLogger2() => provider<RequestLogger>(
       ),
     );
 
-final TodoDatasource todoDatasource = TodoDatasource();
-final AuthDatasource authDatasource = AuthDatasource();
-
 Middleware todoprovider() => provider<TodoDatasource>(
-      (context) => todoDatasource,
+      (context) => TodoDatasource(),
     );
 
 Middleware authprovider() => provider<AuthDatasource>(
-      (context) => authDatasource,
+      (context) => AuthDatasource(),
     );
 
 Handler middleware(Handler handler) {

@@ -7,6 +7,7 @@ ARG DATABASE_HOST
 ARG DATABASE_NAME
 ARG DATABASE_USERNAME
 ARG DATABASE_PASSWORD
+ARG SECKET_KEY
 
 WORKDIR /app
 
@@ -23,12 +24,12 @@ RUN dart pub global run dart_frog_cli:dart_frog build
 
 # Ensure packages are still up-to-date if anything has changed.
 
-
 RUN export DATABASE_HOST=${DATABASE_HOST}
 RUN export DATABASE_PORT=${DATABASE_PORT}
 RUN export DATABASE_NAME=${DATABASE_NAME}
 RUN export DATABASE_USERNAME=${DATABASE_USERNAME}
 RUN export DATABASE_PASSWORD=${DATABASE_PASSWORD}
+RUN export SECRET_KEY=${SECRET_KEY}
 
 
 RUN dart pub get --offline

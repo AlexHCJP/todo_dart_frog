@@ -1,11 +1,26 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
 
-import '../data_source/auth_datasource.dart';
+import '../../data_source/auth_datasource.dart';
 
-Future<Response> onRequest(RequestContext context) async {
+FutureOr<Response> onRequest(RequestContext context) async {
+  switch (context.request.method) {
+    case HttpMethod.post:
+      return _post(context);
+    case HttpMethod.get:
+    case HttpMethod.delete:
+    case HttpMethod.head:
+    case HttpMethod.options:
+    case HttpMethod.patch:
+    case HttpMethod.put:
+      return Response(statusCode: HttpStatus.methodNotAllowed);
+  }
+}
+
+Future<Response> _post(RequestContext context) async {
   final body = jsonDecode(await context.request.body()) as Map<String, dynamic>;
   final email = body['email'] as String?;
   final password = body['password'] as String?;
