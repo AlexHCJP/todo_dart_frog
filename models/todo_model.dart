@@ -1,25 +1,28 @@
-import 'package:uuid/uuid.dart';
-
 class TodoModel {
-
-  TodoModel({
-    required this.id,
-    required this.name,
-  });
+  TodoModel._({required String? id, required this.name}) : _id = id;
 
   factory TodoModel.fromJson(Map<String, dynamic> json) {
-    return TodoModel(
-      id: const Uuid().v4(),
+    return TodoModel._(
+      id: json['id'] as String,
       name: json['name'] as String,
     );
   }
-  
-  final String id;
+
+  factory TodoModel.create(Map<String, dynamic> json) {
+    return TodoModel._(
+      id: null,
+      name: json['name'] as String,
+    );
+  }
+
+  final String? _id;
   final String name;
+
+  String? get id => _id;
 
   Map<String, dynamic> toJson() {
     return {
-      'uuid': id,
+      'id': _id,
       'name': name,
     };
   }

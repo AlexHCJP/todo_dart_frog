@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
-
 import '../../data_source/todo_datasource.dart';
 import '../../models/todo_model.dart';
 
@@ -34,9 +33,9 @@ Future<Response> _post(RequestContext context) async {
     );
   }
 
-  final todo = TodoModel.fromJson(body);
+  final todo = TodoModel.create(body);
 
-  context.read<TodoDatasource>().addTodo(todo);
+  await context.read<TodoDatasource>().addTodo(todo);
 
   return Response(body: jsonEncode({'message': 'OK'}));
 }
@@ -45,11 +44,15 @@ Future<Response> _get(RequestContext context) async {
   final queryParameters = context.request.uri.queryParameters;
   final filter = queryParameters['filter'];
 
-  final todos = context.read<TodoDatasource>().getTodos();
+  final todos = await context.read<TodoDatasource>().getTodos();
 
   if (filter != null && filter.isNotEmpty) {
-    final filteredTodos =
-        todos.where((todo) => todo.name.toUpperCase().contains(filter.trim().toUpperCase())).toList();
+    final filteredTodos = todos
+        .where(
+          (todo) =>
+              todo.name.toUpperCase().contains(filter.trim().toUpperCase()),
+        )
+        .toList();
     return Response(body: jsonEncode({'todos': filteredTodos}));
   }
 
@@ -67,7 +70,7 @@ Future<Response> _delete(RequestContext context) async {
     );
   }
 
-  context.read<TodoDatasource>().removeTodo(uuid);
+  await context.read<TodoDatasource>().removeTodo(uuid);
 
   return Response(body: jsonEncode({'message': 'OK'}));
 }
